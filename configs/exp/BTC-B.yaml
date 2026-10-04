@@ -17,7 +17,8 @@ data:
   num_workers: 8
   batch_size: 32
   pin_memory: True # not used
-  data_path: "C:/Users/MataRajDulari/Desktop/Dataset"
+  #data_path: "C:/Users/MataRajDulari/Desktop/Dataset"
+  data_path: "/content/drive/MyDrive/Change_Detection_Dataset"
   use_hf: False
   # set load_in_mem: "hdf5" only if using train.h5 / test.h5
 #  load_in_mem: "hdf5"
