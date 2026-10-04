@@ -24,15 +24,33 @@ from models.finetune_framework import FinetuneFramework
 def finetune(framework, datamodule, config, wandb_logger):
     has_cuda = torch.cuda.is_available()
 
-    if config.ckpt_path != "None":
+    checkpoint_dir = None
+    if config.checkpoint_dir is not None:
+        checkpoint_dir = (
+            Path(config.checkpoint_dir)
+            / str(config.seed)
+            / f"{config.config_tag}_{config.tag}_{config.data.dataset}"
+        )
         ckpt_callback = ModelCheckpoint(
-            dirpath=f"{config.ckpt_path}/{config.seed}/{config.config_tag}_{config.tag}_{config.data.dataset}",
-            filename="weights",
-            save_weights_only=True,
+            dirpath=checkpoint_dir,
+            filename="epoch={epoch:03d}",
+            save_top_k=0,
+            save_last=True,
+            save_weights_only=False,
+            every_n_epochs=1,
+            save_on_train_epoch_end=True,
         )
         callbacks = [ckpt_callback]
     else:
         callbacks = []
+
+    resume_path = None
+    if config.resume:
+        if checkpoint_dir is None:
+            raise ValueError("--resume requires --checkpoint_dir to be set")
+        resume_path = checkpoint_dir / "last.ckpt"
+        if not resume_path.is_file():
+            raise FileNotFoundError(f"No checkpoint found to resume: {resume_path}")
 
     trainer = Trainer(
         max_epochs=config.train.epochs,
@@ -51,6 +69,7 @@ def finetune(framework, datamodule, config, wandb_logger):
     trainer.fit(
         model=framework,
         datamodule=datamodule,
+        ckpt_path=str(resume_path) if resume_path is not None else None,
     )
 
 

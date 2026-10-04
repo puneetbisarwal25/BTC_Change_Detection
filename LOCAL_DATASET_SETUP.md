@@ -65,6 +65,28 @@ python train.py --config configs/exp/BTC-B.yaml
 python train.py --config configs/exp/BTC-T.yaml
 ```
 
+## Save and Resume Checkpoints
+
+BTC-B saves a full checkpoint at the end of every completed epoch under `./checkpoints`. With the current seed and dataset, the latest checkpoint is saved to:
+
+```text
+checkpoints/42/BTC-B__oscd96/last.ckpt
+```
+
+Start training as usual:
+
+```powershell
+python train.py --config configs/exp/BTC-B.yaml
+```
+
+To continue that run later, add `--resume`:
+
+```powershell
+python train.py --config configs/exp/BTC-B.yaml --resume
+```
+
+Resume restores the model, optimizer, scheduler, and epoch state from `last.ckpt`. Checkpoints are written at completed epoch boundaries, so an interruption during an epoch resumes from the previous completed epoch. The configured `train.epochs` remains the total target epoch, so increase it in the config if you want to train beyond that target. To save checkpoints for another experiment, set `checkpoint_dir` in its config or pass `--checkpoint_dir ./checkpoints`. The existing `ckpt_path` option remains for evaluation-only checkpoint loading.
+
 ## Validation Behavior
 
 With local on-demand loading (`use_hf: False` and `load_in_mem` omitted), the current data module falls back to the test split for validation. As a result, validation metrics during training are calculated on the test data, not on a separate validation split. The code only checks for a validation split when using Hugging Face, `load_in_mem: "direct"`, or `load_in_mem: "hdf5"` mode.

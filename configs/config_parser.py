@@ -90,6 +90,17 @@ def add_arguments(parser: ArgumentParser):
     )
     parser.add_argument("--ckpt_path", help="save checkpoints", type=str, default=None)
     parser.add_argument(
+        "--checkpoint_dir",
+        type=str,
+        default=None,
+        help="directory for resumable training checkpoints",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="resume training from the last checkpoint in checkpoint_dir",
+    )
+    parser.add_argument(
         "--eval_only",
         help="run only evaluation. Note: requires mandatory weight passed with --ckpt_path",
         action="store_true",

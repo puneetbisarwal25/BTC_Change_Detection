@@ -5,7 +5,8 @@ res_path: "./results" # results path (default is ./results)
 
 wandb_proj: None       # name of wandb project, set to None if you don't want to use
 vis_path: True      # set to True if you want to visualise the results, else False
-ckpt_path: None     # path to where ckpt is saved, if None - don't save (None with capital N! i.e. None). This same argument is used when doing eval only to pass saved checkpoint.
+ckpt_path: None     # checkpoint file or Hugging Face model ID for evaluation-only runs
+checkpoint_dir: "./checkpoints" # save full resumable training checkpoints here
 
 dev: False          # set to True for fast dev run (https://lightning.ai/docs/pytorch/stable/common/trainer.html#fast-dev-run)
 
