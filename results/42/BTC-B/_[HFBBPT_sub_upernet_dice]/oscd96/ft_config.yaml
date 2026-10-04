@@ -1,0 +1,104 @@
+!!python/object:jsonargparse._namespace.Namespace
+ckpt_path: blaz-r/BTC-B_oscd96
+config:
+- !!python/object:jsonargparse._paths.Path
+  _absolute: C:\Users\MataRajDulari\Desktop\Change_Detection\BTC_Change_Detection\configs/exp/BTC-B.yaml
+  _cwd: C:\Users\MataRajDulari\Desktop\Change_Detection\BTC_Change_Detection
+  _is_fsspec: false
+  _is_url: false
+  _mode: fr
+  _relative: configs/exp/BTC-B.yaml
+  _skip_check: false
+  _std_io: false
+  _url_data: null
+config_tag: BTC-B
+data: !!python/object:jsonargparse._namespace.Namespace
+  batch_size: 8
+  data_path: ./datasets
+  dataset: oscd96
+  img_size: 256
+  load_in_mem: null
+  num_workers: 0
+  pin_memory: true
+  use_hf: true
+decoder: !!python/object:jsonargparse._namespace.Namespace
+  train: !!python/object:jsonargparse._namespace.Namespace
+    class_path: models.modules.upernet.UperNetHead
+    init_args: !!python/object:jsonargparse._namespace.Namespace
+      hidden_size: 512
+      load_weights: null
+      lr: null
+      out_channels: 1
+      transfer: true
+      use_auxfcn: false
+      weight_decay: null
+dev: false
+devices: auto
+diff: !!python/object:jsonargparse._namespace.Namespace
+  class_path: models.modules.simple_diff.SubDiff
+  init_args: !!python/object:jsonargparse._namespace.Namespace
+    lr: null
+    norm: false
+    transfer: true
+    use_in_pretrain: false
+    weight_decay: null
+encoder: !!python/object:jsonargparse._namespace.Namespace
+  class_path: models.modules.hf_backbone.HFBackbone
+  init_args: !!python/object:jsonargparse._namespace.Namespace
+    lr: null
+    lr_adjustments: false
+    model_name: facebook/mask2former-swin-base-IN21k-cityscapes-semantic
+    pretrain_args: null
+    return_layers:
+    - 1
+    - 2
+    - 3
+    - 4
+    train_args:
+      finetune: true
+      pretrained: true
+    transfer: true
+    weight_decay: null
+eval_only: true
+out_proc: null
+pre_diff: null
+res_path: ./results
+seed: 42
+tag: ''
+train: !!python/object:jsonargparse._namespace.Namespace
+  base_lr: 0.0001
+  ckpt: null
+  epochs: 100
+  grad_clip_val: null
+  layer_decay: 0.99
+  loss:
+  - dice
+  lr_scheduler: !!python/object:jsonargparse._namespace.Namespace
+    gamma: null
+    ratio_t0: 1.0
+    type: cosine
+    warmup_epoch_ratio: null
+    warmup_lr_ratio: null
+  transforms:
+  - VerticalFlip:
+      p: 0.3
+  - HorizontalFlip:
+      p: 0.3
+  - Rotate:
+      limit:
+      - -90
+      - 90
+      p: 0.3
+  - Normalize:
+      mean:
+      - 0.485
+      - 0.456
+      - 0.406
+      std:
+      - 0.229
+      - 0.224
+      - 0.225
+  val_freq: 5
+  weight_decay: 0.0001
+vis_path: true
+wandb_proj: None
