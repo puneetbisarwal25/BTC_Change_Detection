@@ -1,4 +1,4 @@
-config_tag: BTC-T     # use for experiment naming and wandb log names (can also use separate optional "tag")
+config_tag: BTC-T-OSCD-paper # separate paper-protocol run from historical BTC-T results
 seed: 42              # random seed
 devices: "auto"       # lighting devices (multi GPU support not verified)
 res_path: "./results" # results path (default is ./results)
@@ -12,7 +12,7 @@ dev: False          # set to True for fast dev run (https://lightning.ai/docs/py
 # dataset details
 data:
   dataset: "oscd96"
-  img_size: 96    # square of img_size x img_size
+  img_size: 256   # OSCD 96x96 tiles are resized to the paper's 256x256 input
   num_workers: 8
   batch_size: 32
   pin_memory: True # not used
@@ -24,7 +24,7 @@ data:
 
 # train details
 train:
-  epochs: 100
+  epochs: 50
   val_freq: 5           # run validation on val set every N epoch
   base_lr: 1.0e-4       # starting lr
   weight_decay: 1e-4
